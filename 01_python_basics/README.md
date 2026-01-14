@@ -8,3 +8,4 @@
   - day3_while_loop_practice.py :
 
   - data_cleaning_basic.py
+  - data_analysis_with_insights.py
