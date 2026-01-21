@@ -1,0 +1,64 @@
+sales_data = [
+    {"day": "Mon", "sales": 20},
+    {"day": "Tue", "sales": 0},
+    {"day": "Wed", "sales": 45},
+    {"day": "Thu", "sales": -5},   # invalid
+    {"day": "Fri", "sales": 70},
+    {"day": "Sat", "sales": 10}
+]
+
+def analyze_sales(data):
+    total_sales = 0
+    valid_days = 0
+    zero_days = 0
+    max_sale = None
+    best_day = None
+
+    for row in data:
+        sale = row["sales"]
+
+        if sale < 0:
+            continue
+
+        if sale == 0:
+            zero_days += 1
+            continue
+
+        total_sales += sale
+        valid_days += 1
+
+        if max_sale is None or sale > max_sale:
+            max_sale = sale
+            best_day = row["day"]
+
+    average = total_sales / valid_days if valid_days > 0 else 0
+
+    insight = []
+    if average > 40:
+        insight.append("Overall sales strong")
+    else:
+        insight.append("Sales need improvement")
+
+    if zero_days > 0:
+        insight.append("Zero-sales days present")
+
+    return {
+        "total_sales": total_sales,
+        "average": average,
+        "best_day": best_day,
+        "zero_days": zero_days,
+        "insight": insight
+    }
+    
+report = analyze_sales(sales_data)
+
+print("\n📊 Sales Report")
+print("----------------")
+print("Total Sales :", report["total_sales"])
+print("Average     :", round(report["average"], 2))
+print("Best Day    :", report["best_day"])
+print("Zero Days   :", report["zero_days"])
+
+print("\nInsights:")
+for line in report["insight"]:
+    print("-", line)
