@@ -1,0 +1,122 @@
+def analyze_sales(data):
+    total = 0
+    zero_count = 0
+    valid_count = 0
+    minimum = None
+    maximum = None
+
+    low = 0
+    mid = 0
+    high = 0
+
+    low_level = 10
+    mid_level = 50
+
+    insights = []
+
+    for num in data:
+        if num < 0:
+            continue
+
+        if num == 0:
+            zero_count += 1
+            continue
+
+        # positive values
+        valid_count += 1
+        total += num
+
+        if minimum is None:
+            minimum = num
+            maximum = num
+        else:
+            if num < minimum:
+                minimum = num
+            if num > maximum:
+                maximum = num
+
+        if num <= low_level:
+            low += 1
+        elif num <= mid_level:
+            mid += 1
+        else:
+            high += 1
+
+    if valid_count > 0:
+        average = total / valid_count
+    else:
+        average = 0
+
+    # ---- INSIGHTS (loop ke bahar, sirf ek baar) ----
+    if high > mid and high > low:
+        insights.append("Sales performance strong hai")
+
+    if low > mid and low > high:
+        insights.append("Low sales dominate — strategy improvement needed")
+
+    if mid > high and mid > low:
+        insights.append("Sales stable aur balanced hai")
+
+    if zero_count > 0:
+        insights.append("Zero sales days present — review required")
+
+    return {
+        "total": total,
+        "average": round(average, 2),
+        "minimum": minimum,
+        "maximum": maximum,
+        "low": low,
+        "mid": mid,
+        "high": high,
+        "zero_count": zero_count,
+        "insights": insights
+    }
+    
+mega_dataset = {
+    "North": {
+        "Branch_A": [12, 0, 15, 18, -2, 40, 55, 0, 65, 70, 5, 8, 90],
+        "Branch_B": [5, 7, 0, 12, 20, 22, -5, 30, 45, 0, 60],
+        "Branch_C": [0, 0, 3, 5, 8, 10, 15, 18, -1, 25]
+    },
+    "South": {
+        "Branch_D": [20, 25, 30, 35, 0, 45, 55, 65, -3, 75],
+        "Branch_E": [2, 4, 0, 6, 8, 10, 0, 12, 14, 16],
+        "Branch_F": [50, 60, 70, 80, 90, 0, -10, 100]
+    },
+    "East": {
+        "Branch_G": [1, 0, 2, 3, 5, 8, 13, 21, 34, -1],
+        "Branch_H": [10, 20, 30, 40, 50, 60, 0, 70, 80],
+        "Branch_I": [0, 0, 0, 5, 10, 15, 20, 25]
+    },
+    "West": {
+        "Branch_J": [5, 10, 15, 20, 0, 25, 30, 35, 40],
+        "Branch_K": [100, 90, 80, 70, 60, 0, -20],
+        "Branch_L": [3, 6, 9, 12, 15, 18, 21, 0, 24]
+    }
+}
+    
+for region, branches in mega_dataset.items():
+    print(f"region name : {region}")
+    for branch, data in branches.items():
+       report = analyze_sales(data)
+       print("\n===================")
+       print(f"Sales Report : {branch}")
+       print("======================")
+
+       print("Total Sales   :", report["total"])
+       print("Average Sales :", report["average"])
+       print("Minimum Sale  :", report["minimum"])
+       print("Maximum Sale  :", report["maximum"])
+
+       print("\nCategories:")
+       print(" Low  :", report["low"])
+       print(" Mid  :", report["mid"])
+       print(" High :", report["high"])
+
+       print("\nInsights:")
+       if report["insights"]:
+           for ins in report["insights"]:
+                 print(" -", ins)
+       else:
+             print(" - No major issues found")
+  
